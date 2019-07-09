@@ -1,0 +1,16 @@
+.cell {
+  display: flex;
+  background-color: rgba(105, 134, 198, 0.8);
+  border-radius: 10px;
+  border: rgba(8, 26, 54, 0.78) 2px solid;
+  width: 70px;
+  height: 70px;
+
+  .mt-0 {
+    margin-top: 0 !important;
+  }
+
+  //span {
+  //  padding-top: 20px;
+  //}
+}
