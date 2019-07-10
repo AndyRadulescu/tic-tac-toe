@@ -12,7 +12,7 @@ import {Game} from './models';
 })
 export class GameState {
   @Receiver()
-  public static addMovement({setState, getState}: StateContext<Game>, {payload}: EmitterAction<string>) {
+  public static addMovement({setState, getState}: StateContext<Game>, {payload}: EmitterAction<string>): void {
     const state = getState();
     const movementArray = state.movementArray;
     if (!movementArray.includes(payload)) {
@@ -24,5 +24,14 @@ export class GameState {
       });
     }
     console.log(getState());
+  }
+
+  @Receiver()
+  public static reset({setState, getState}: StateContext<Game>): void {
+    setState({
+      ...getState(),
+      xTurn: true,
+      movementArray: []
+    });
   }
 }
