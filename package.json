@@ -22,6 +22,8 @@
     "@clr/angular": "^2.0.2",
     "@clr/icons": "^2.0.2",
     "@clr/ui": "^2.0.2",
+    "@ngxs-labs/emitter": "^1.9.0",
+    "@ngxs/store": "^3.4.3",
     "@webcomponents/custom-elements": "^1.0.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
