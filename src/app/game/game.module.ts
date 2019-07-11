@@ -9,10 +9,11 @@ import {GameState} from './core/game.state';
 import {ResetGameComponent} from './game-container/reset-game/reset-game.component';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {FinishLineComponent} from './game-container/finish-line/finish-line.component';
+import { ScoreComponent } from './game-container/score/score.component';
 
 
 @NgModule({
-  declarations: [GameContainerComponent, GameCellComponent, ResetGameComponent, FinishLineComponent],
+  declarations: [GameContainerComponent, GameCellComponent, ResetGameComponent, FinishLineComponent, ScoreComponent],
   imports: [
     CommonModule,
     GameRoutingModule,
