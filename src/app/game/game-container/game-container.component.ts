@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {Game} from '../core/models';
 import {CellPosition} from '../interfaces/interfaces';
 import FinishGame from '../utils/finish-game';
+import {EmitterService} from '@ngxs-labs/emitter';
 
 @Component({
   selector: 'app-game-container',
@@ -17,7 +18,7 @@ export class GameContainerComponent implements OnInit {
   public gameState$: Observable<Game>;
   public position: any;
 
-  constructor() {
+  constructor(private emitter: EmitterService) {
     this.cells = [];
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -30,10 +31,11 @@ export class GameContainerComponent implements OnInit {
     const finish = new FinishGame();
     this.gameState$.subscribe(data => {
       const finishLine = finish.verifyFinish(data.movementArray);
-      if (!finish) {
+      if (!finishLine) {
         return;
       } else {
         this.position = finishLine;
+        this.emitter.action(GameState.finishGame).emit();
       }
     });
   }

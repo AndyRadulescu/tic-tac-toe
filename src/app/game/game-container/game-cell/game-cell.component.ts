@@ -42,6 +42,9 @@ export class GameCellComponent implements OnInit, OnDestroy {
     }
     this.gameState.pipe(take(1))
       .subscribe(data => {
+        if (!data.isPlaying) {
+          return;
+        }
         this.cellValue = GameCellComponent.XorO[data.xTurn.toString()];
         this.emitter.action(GameState.addMovement).emit({cellId: this.cellPosition, movement: this.cellValue} as IMovement);
       });

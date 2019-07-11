@@ -5,7 +5,8 @@ import {Game, IMovement} from './models';
 @State<Game>({
   name: 'game',
   defaults: {
-    score: 0,
+    score: {x: 0, o: 0},
+    isPlaying: true,
     xTurn: true,
     movementArray: [],
   }
@@ -31,7 +32,35 @@ export class GameState {
     setState({
       ...getState(),
       xTurn: true,
+      isPlaying: true,
       movementArray: []
     });
   }
+
+  @Receiver()
+  public static finishGame({setState, getState}: StateContext<Game>): void {
+    const state = getState();
+    const newScore = GameState.manageScore(state);
+    setState({
+      ...state,
+      score: newScore,
+      isPlaying: false
+    });
+  }
+
+  private static manageScore(state: Game) {
+    const lastItem = state.movementArray.pop();
+    if (lastItem.movement === 'X') {
+      return {
+        ...state.score,
+        x: state.score.x + 1
+      };
+    } else {
+      return {
+        ...state.score,
+        o: state.score.o + 1
+      };
+    }
+  }
+
 }

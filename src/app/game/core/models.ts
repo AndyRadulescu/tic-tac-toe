@@ -1,7 +1,8 @@
 import {CellPosition} from '../interfaces/interfaces';
 
 export interface Game {
-  score: number;
+  score: IScore;
+  isPlaying: boolean;
   xTurn: boolean;
   movementArray: IMovement[];
 }
@@ -9,4 +10,9 @@ export interface Game {
 export interface IMovement {
   cellId: CellPosition;
   movement: string;
+}
+
+export interface IScore {
+  x: number;
+  o: number;
 }
