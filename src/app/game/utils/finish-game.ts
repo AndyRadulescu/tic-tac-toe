@@ -3,7 +3,7 @@ import {FinishLinePosition} from '../interfaces/interfaces';
 
 export default class FinishGame {
 
-  verifyFinish(movementArray: IMovement[]) {
+  verifyFinish(movementArray: IMovement[]): FinishLinePosition | boolean {
     const diagonals = this.verifyDiagonals(movementArray);
     if (diagonals) {
       return diagonals;
@@ -38,7 +38,7 @@ export default class FinishGame {
     return false;
   }
 
-  private verifyDiagonals(movementArray: IMovement[]) {
+  private verifyDiagonals(movementArray: IMovement[]): FinishLinePosition | boolean {
     const primaryDiag = movementArray.filter(el => {
       return el.cellId.j === el.cellId.i;
     });
@@ -57,9 +57,10 @@ export default class FinishGame {
         return this.placeFinishLines(secondaryDiagNumber, 'secondaryDiag');
       }
     }
+    return false;
   }
 
-  placeFinishLines(rowColNumber, type: string) {
+  private placeFinishLines(rowColNumber, type: string): FinishLinePosition {
     switch (type) {
       case('row'): {
         const colPosition = rowColNumber.j * 70 - 116;

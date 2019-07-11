@@ -3,7 +3,7 @@ import {GameState} from '../core/game.state';
 import {Select} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {Game} from '../core/models';
-import {CellPosition, FinishLinePosition} from '../interfaces/interfaces';
+import {CellPosition} from '../interfaces/interfaces';
 import FinishGame from '../utils/finish-game';
 
 @Component({
@@ -30,7 +30,6 @@ export class GameContainerComponent implements OnInit {
     const finish = new FinishGame();
     this.gameState$.subscribe(data => {
       const finishLine = finish.verifyFinish(data.movementArray);
-      console.log(finishLine);
       if (!finish) {
         return;
       } else {
