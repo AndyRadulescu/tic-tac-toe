@@ -3,8 +3,9 @@ import {EmitterService} from '@ngxs-labs/emitter';
 import {GameState} from '../../core/game.state';
 import {Observable} from 'rxjs';
 import {Select} from '@ngxs/store';
-import {Game} from '../../core/models';
+import {Game, IMovement} from '../../core/models';
 import {take} from 'rxjs/operators';
+import {CellPosition} from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-game-cell',
@@ -18,9 +19,9 @@ export class GameCellComponent implements OnInit, OnDestroy {
     false: '0'
   };
 
-  @Input() cellName: string;
+  @Input() cellPosition: CellPosition;
   @Select(GameState)
-  public counter$: Observable<Game>;
+  public gameState: Observable<Game>;
   public cellValue: string;
   private subscription;
 
@@ -28,8 +29,7 @@ export class GameCellComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.counter$.subscribe(data => {
-      console.log(data);
+    this.subscription = this.gameState.subscribe(data => {
       if (data.movementArray.length === 0) {
         this.cellValue = undefined;
       }
@@ -40,11 +40,11 @@ export class GameCellComponent implements OnInit, OnDestroy {
     if (this.cellValue !== undefined) {
       return;
     }
-    this.counter$.pipe(take(1))
+    this.gameState.pipe(take(1))
       .subscribe(data => {
         this.cellValue = GameCellComponent.XorO[data.xTurn.toString()];
+        this.emitter.action(GameState.addMovement).emit({cellId: this.cellPosition, movement: this.cellValue} as IMovement);
       });
-    this.emitter.action(GameState.addMovement).emit(this.cellName);
   }
 
   ngOnDestroy() {

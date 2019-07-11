@@ -1,6 +1,6 @@
 import {State, StateContext} from '@ngxs/store';
 import {EmitterAction, Receiver} from '@ngxs-labs/emitter';
-import {Game} from './models';
+import {Game, IMovement} from './models';
 
 @State<Game>({
   name: 'game',
@@ -12,7 +12,7 @@ import {Game} from './models';
 })
 export class GameState {
   @Receiver()
-  public static addMovement({setState, getState}: StateContext<Game>, {payload}: EmitterAction<string>): void {
+  public static addMovement({setState, getState}: StateContext<Game>, {payload}: EmitterAction<IMovement>): void {
     const state = getState();
     const movementArray = state.movementArray;
     if (!movementArray.includes(payload)) {

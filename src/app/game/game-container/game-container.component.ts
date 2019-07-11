@@ -1,4 +1,10 @@
 import {Component, OnInit} from '@angular/core';
+import {GameState} from '../core/game.state';
+import {Select} from '@ngxs/store';
+import {Observable} from 'rxjs';
+import {Game} from '../core/models';
+import {CellPosition, FinishLinePosition} from '../interfaces/interfaces';
+import FinishGame from '../utils/finish-game';
 
 @Component({
   selector: 'app-game-container',
@@ -6,13 +12,31 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./game-container.component.scss']
 })
 export class GameContainerComponent implements OnInit {
-  public cells = ['00', '01', '02', '10', '11', '12', '20', '21', '22'];
+  public cells: CellPosition[];
+  @Select(GameState)
+  public gameState$: Observable<Game>;
+  public position: any;
 
   constructor() {
+    this.cells = [];
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        this.cells.push({i, j});
+      }
+    }
   }
 
   ngOnInit() {
-    console.log('It Works!');
+    const finish = new FinishGame();
+    this.gameState$.subscribe(data => {
+      const finishLine = finish.verifyFinish(data.movementArray);
+      console.log(finishLine);
+      if (!finish) {
+        return;
+      } else {
+        this.position = finishLine;
+      }
+    });
   }
 
 }
