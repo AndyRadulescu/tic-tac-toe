@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select} from '@ngxs/store';
 import {GameState} from '../../core/game.state';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Game} from '../../core/models';
 
 @Component({
@@ -9,21 +9,26 @@ import {Game} from '../../core/models';
   templateUrl: './score.component.html',
   styleUrls: ['./score.component.scss']
 })
-export class ScoreComponent implements OnInit {
+export class ScoreComponent implements OnInit, OnDestroy {
   public x = 0;
   public o = 0;
 
   @Select(GameState)
   private gameState$: Observable<Game>;
+  private subscription: Subscription;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.gameState$.subscribe(data => {
+    this.subscription = this.gameState$.subscribe(data => {
       this.x = data.score.x;
       this.o = data.score.o;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

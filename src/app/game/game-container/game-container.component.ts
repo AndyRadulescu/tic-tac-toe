@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GameState} from '../core/game.state';
 import {Select} from '@ngxs/store';
-import {Observable} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {Game} from '../core/models';
-import {CellPosition} from '../interfaces/interfaces';
+import {CellPosition, FinishLinePosition} from '../interfaces/interfaces';
 import FinishGame from '../utils/finish-game';
 import {EmitterService} from '@ngxs-labs/emitter';
 
@@ -12,11 +12,13 @@ import {EmitterService} from '@ngxs-labs/emitter';
   templateUrl: './game-container.component.html',
   styleUrls: ['./game-container.component.scss']
 })
-export class GameContainerComponent implements OnInit {
+export class GameContainerComponent implements OnInit, OnDestroy {
   public cells: CellPosition[];
+  public position: FinishLinePosition | boolean;
+
   @Select(GameState)
   public gameState$: Observable<Game>;
-  public position: any;
+  private subscription: Subscription;
 
   constructor(private emitter: EmitterService) {
     this.cells = [];
@@ -29,7 +31,7 @@ export class GameContainerComponent implements OnInit {
 
   ngOnInit() {
     const finish = new FinishGame();
-    this.gameState$.subscribe(data => {
+    this.subscription = this.gameState$.subscribe(data => {
       const finishLine = finish.verifyFinish(data.movementArray);
       if (!finishLine) {
         return;
@@ -40,4 +42,7 @@ export class GameContainerComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

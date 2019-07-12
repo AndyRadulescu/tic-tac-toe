@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FinishLinePosition} from '../../interfaces/interfaces';
 import {Select} from '@ngxs/store';
 import {GameState} from '../../core/game.state';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Game} from '../../core/models';
 
 @Component({
@@ -10,11 +10,12 @@ import {Game} from '../../core/models';
   templateUrl: './finish-line.component.html',
   styleUrls: ['./finish-line.component.scss']
 })
-export class FinishLineComponent implements OnInit {
+export class FinishLineComponent implements OnInit, OnDestroy {
 
   @Input() position: FinishLinePosition;
   @Select(GameState)
   public gameState$: Observable<Game>;
+  private subscription: Subscription;
 
   public isHidden = true;
 
@@ -22,9 +23,12 @@ export class FinishLineComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.gameState$.subscribe(data => {
+    this.subscription = this.gameState$.subscribe(data => {
       this.isHidden = data.isPlaying;
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {EmitterService} from '@ngxs-labs/emitter';
 import {GameState} from '../../core/game.state';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Select} from '@ngxs/store';
 import {Game, IMovement} from '../../core/models';
 import {take} from 'rxjs/operators';
@@ -23,7 +23,7 @@ export class GameCellComponent implements OnInit, OnDestroy {
   @Select(GameState)
   public gameState: Observable<Game>;
   public cellValue: string;
-  private subscription;
+  private subscription: Subscription;
 
   constructor(public emitter: EmitterService) {
   }

@@ -64,7 +64,6 @@ export default class FinishGame {
     switch (type) {
       case('row'): {
         const colPosition = rowColNumber.j * 70 - 116;
-        console.log(colPosition);
         return {
           top: '300px',
           left: colPosition + 'px',

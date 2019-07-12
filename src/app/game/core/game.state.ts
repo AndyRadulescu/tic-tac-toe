@@ -24,7 +24,6 @@ export class GameState {
         xTurn: !state.xTurn
       });
     }
-    console.log(getState());
   }
 
   @Receiver()
